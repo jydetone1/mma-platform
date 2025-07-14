@@ -64,7 +64,10 @@ export class RankingService {
     return outcome === 'draw' ? 1 : 0;
   }
 
-  private async updateFighterRanking(fighter: any, points: number) {
+  private async updateFighterRanking(
+    fighter: Record<string, any>,
+    points: number,
+  ) {
     let ranking = await this.rankingRepository.findOne({
       where: { fighter: { id: fighter.id }, weightClass: fighter.weightClass },
     });
@@ -90,7 +93,7 @@ export class RankingService {
     const totalFights = fightHistory.length;
     const winPercentage = totalFights > 0 ? (wins / totalFights) * 100 : 0;
     const lastFightDate =
-      fightHistory.length > 0 && fightHistory[0].fight.createdAt
+      totalFights > 0 && fightHistory[0].fight.createdAt
         ? new Date(fightHistory[0].fight.createdAt)
         : null;
 
